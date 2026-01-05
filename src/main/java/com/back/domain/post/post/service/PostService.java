@@ -26,8 +26,8 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public Optional<Post> findById(String id) {
-        return postRepository.findById(id);
+    public Post findById(String id) {
+        return postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
     }
 
     public Post create(String title, String content, String author) {
