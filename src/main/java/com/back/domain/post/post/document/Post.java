@@ -46,4 +46,16 @@ public class Post {
         this.createdAt = OffsetDateTime.now();
         this.lastModifiedAt = OffsetDateTime.now();
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", author='" + author + '\'' +
+                ", createdAt=" + createdAt +
+                ", lastModifiedAt=" + lastModifiedAt +
+                '}';
+    }
 }
