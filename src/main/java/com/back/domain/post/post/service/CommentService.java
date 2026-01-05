@@ -38,4 +38,12 @@ public class CommentService {
         Comment comment = new Comment(post.getId(), content, author);
         return commentRepository.save(comment);
     }
+
+    public Comment update(String id, String content) {
+        Comment comment = findById(id);
+        if (content != null) {
+            comment.setContent(content);
+        }
+        return commentRepository.save(comment);
+    }
 }
