@@ -5,6 +5,8 @@ import com.back.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author : JAKE
  * @date : 26. 1. 5.
@@ -17,6 +19,10 @@ public class PostService {
 
     public long count() {
         return postRepository.count();
+    }
+
+    public List<Post> findAll() {
+        return postRepository.findAll();
     }
 
     public Post create(String title, String content, String author) {
