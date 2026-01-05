@@ -44,7 +44,6 @@ public class PostService {
         if (content != null) {
             post.setContent(content);
         }
-        post.setLastModifiedAt(OffsetDateTime.now());
         return postRepository.save(post);
     }
 
