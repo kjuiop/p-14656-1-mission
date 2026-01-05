@@ -1,6 +1,9 @@
 package com.back.post.post.controller;
 
+import co.elastic.clients.util.ContentType;
 import com.back.BaseTest;
+import com.back.domain.post.post.controller.PostController;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,6 +11,10 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author : JAKE
@@ -24,6 +31,42 @@ public class PostControllerTests extends BaseTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void contextLoads() {
+    @DisplayName("POST /api/v1/posts - 실패 (title 누락)")
+    void t1() throws Exception {
+        mockMvc.perform(
+                post("/api/v1/posts")
+                        .contentType(ContentType.APPLICATION_JSON)
+                        .content(
+                                objectMapper.writeValueAsBytes(
+                                        new PostController.CreatePostRequest(
+                                                null,
+                                                "Test Content",
+                                                "Test Author"
+                                        )
+                                )
+                        )
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("POST /api/v1/posts - 성공")
+    void t2() throws Exception {
+        mockMvc.perform(
+                post("/api/v1/posts")
+                        .contentType(ContentType.APPLICATION_JSON)
+                        .content(
+                                objectMapper.writeValueAsBytes(
+                                        new PostController.CreatePostRequest(
+                                                "Test Title",
+                                                "Test Content",
+                                                "Test Author"
+                                        )
+                                )
+                        )
+        ).andExpect(status().isCreated())
+                .andExpect(jsonPath("title").value("Test Title"))
+                .andExpect(jsonPath("content").value("Test Content"))
+                .andExpect(jsonPath("author").value("Test Author"))
+                .andExpect(jsonPath("id").isNotEmpty());
     }
 }

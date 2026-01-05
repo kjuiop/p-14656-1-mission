@@ -16,10 +16,11 @@ public class BaseTest {
     @Container
     public static final ElasticsearchContainer elasticsearchContainer
             = new ElasticsearchContainer(
-            DockerImageName.parse("elasticsearch:nori")
+            DockerImageName.parse("docker.elastic.co/elasticsearch/elasticsearch:7.17.11")
     )
             .withEnv("discovery.type", "single-node")
             .withEnv("xpack.security.enabled", "false")
+            .withEnv("ES_JAVA_OPTS", "-Xms512m -Xmx512m")
             .withExposedPorts(9200)
             .waitingFor(
                     Wait.forHttp("/")
