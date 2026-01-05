@@ -26,6 +26,6 @@ public class BaseInitData {
     }
 
     private void work1() {
-        log.debug("Post entity 개수: {}",postService.count());
+        log.debug("Post entity 개수: {}", postService.count());
     }
 }

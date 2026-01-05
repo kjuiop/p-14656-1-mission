@@ -1,5 +1,7 @@
 package com.back.domain.post.post.service;
 
+import com.back.domain.post.post.repository.PostRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -7,9 +9,12 @@ import org.springframework.stereotype.Service;
  * @date : 26. 1. 5.
  */
 @Service
+@RequiredArgsConstructor
 public class PostService {
 
+    private final PostRepository postRepository;
+
     public long count() {
-        return 0;
+        return postRepository.count();
     }
 }
