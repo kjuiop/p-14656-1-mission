@@ -5,6 +5,7 @@ import com.back.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,18 @@ public class PostService {
 
     public Post create(String title, String content, String author) {
         Post post = new Post(title, content, author);
+        return postRepository.save(post);
+    }
+
+    public Post update(String id, String title, String content) {
+        Post post = findById(id);
+        if (title != null) {
+            post.setTitle(title);
+        }
+        if (content != null) {
+            post.setContent(content);
+        }
+        post.setLastModifiedAt(OffsetDateTime.now());
         return postRepository.save(post);
     }
 }
