@@ -24,12 +24,13 @@ public class BaseInitData {
     @Bean
     public ApplicationRunner baseInitDataRunner() {
         return args -> {
-            work1();
-            work2();
-            work3();
-            work4();
+//            work1();
+//            work2();
+//            work3();
+//            work4();
 //            work5();
             work6();
+            work7();
         };
     }
 
@@ -91,6 +92,13 @@ public class BaseInitData {
                 var comment = commentService.create(post, content, author);
                 log.debug("Created Comment: {}", comment);
             }
+        }
+    }
+
+    private void work7() {
+        log.debug("기존 Comment 전체 조회");
+        for (var comment : commentService.findAll()) {
+            log.debug("Existing Comment: {}", comment);
         }
     }
 }

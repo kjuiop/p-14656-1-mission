@@ -6,6 +6,8 @@ import com.back.domain.post.post.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author : JAKE
  * @date : 26. 1. 5.
@@ -18,6 +20,10 @@ public class CommentService {
 
     public long count() {
         return commentRepository.count();
+    }
+
+    public List<Comment> findAll() {
+        return commentRepository.findAll();
     }
 
     public Comment create(Post post, String content, String author) {
