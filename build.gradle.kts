@@ -27,6 +27,11 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
+
+    // Testcontainers
+    testImplementation(platform("org.testcontainers:testcontainers-bom:1.19.8"))
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:testcontainers-elasticsearch")
 }
 
 tasks.withType<Test> {
