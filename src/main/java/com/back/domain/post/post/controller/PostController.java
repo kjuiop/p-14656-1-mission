@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author : JAKE
  * @date : 26. 1. 5.
@@ -43,5 +45,10 @@ public class PostController {
                 request.author()
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(post);
+    }
+
+    @RequestMapping
+    public List<Post> findAll() {
+        return postService.findAll();
     }
 }

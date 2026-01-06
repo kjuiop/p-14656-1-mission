@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -68,5 +69,15 @@ public class PostControllerTests extends BaseTest {
                 .andExpect(jsonPath("content").value("Test Content"))
                 .andExpect(jsonPath("author").value("Test Author"))
                 .andExpect(jsonPath("id").isNotEmpty());
+    }
+
+    @Test
+    @DisplayName("GET /api/v1/posts - 성공")
+    void t3() throws Exception {
+        mockMvc.perform(
+                get("/api/v1/posts")
+                        .contentType(ContentType.APPLICATION_JSON)
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
     }
 }
