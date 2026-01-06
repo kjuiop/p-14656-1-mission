@@ -65,6 +65,12 @@ public class PostController {
         );
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        postService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @RequestMapping
     public List<Post> findAll() {
         return postService.findAll();
