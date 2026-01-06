@@ -1,8 +1,6 @@
 package com.back.domain.post.post.controller;
 
-import com.back.domain.post.post.document.Comment;
 import com.back.domain.post.post.document.Post;
-import com.back.domain.post.post.service.CommentService;
 import com.back.domain.post.post.service.PostService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -35,6 +33,14 @@ public class PostController {
             String author
     ){}
 
+    public record UpdatePostRequest(
+            @NotBlank(message = "Title must not be blank")
+            @Size(max = 100, min = 1)
+            String title,
+            @NotBlank(message = "Content must not be blank")
+            String content
+    ){}
+
     @PostMapping
     public ResponseEntity<Post> create(
             @RequestBody @Valid CreatePostRequest request
@@ -45,6 +51,18 @@ public class PostController {
                 request.author()
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(post);
+    }
+
+    @PutMapping("/{id}")
+    public Post update(
+            @PathVariable String id,
+            @RequestBody @Valid UpdatePostRequest request
+    ) {
+        return postService.update(
+                id,
+                request.title(),
+                request.content()
+        );
     }
 
     @RequestMapping
