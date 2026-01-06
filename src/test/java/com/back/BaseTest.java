@@ -1,5 +1,10 @@
 package com.back;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.wait.strategy.Wait;
@@ -31,6 +36,17 @@ public class BaseTest {
     @DynamicPropertySource
     public static void setElasticsearchProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.elasticsearch.uris", () -> elasticsearchContainer.getHttpHostAddress());
+    }
+
+    @TestConfiguration
+    public static class JacksonTestConfig {
+        @Bean
+        public ObjectMapper objectMapper() {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            return mapper;
+        }
     }
 
 }

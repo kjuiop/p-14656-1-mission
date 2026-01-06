@@ -2,13 +2,13 @@ package com.back.global.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * @author : JAKE
  * @date : 26. 1. 6.
  */
-@RestController
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     record ErrorResponse(String message, String resultCode) {}

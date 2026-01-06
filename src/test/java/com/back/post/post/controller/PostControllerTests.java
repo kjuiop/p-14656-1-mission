@@ -4,14 +4,16 @@ import co.elastic.clients.util.ContentType;
 import com.back.BaseTest;
 import com.back.domain.post.post.controller.PostController;
 import com.back.domain.post.post.document.Post;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,12 +27,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Testcontainers
 @AutoConfigureMockMvc
+@Import(PostControllerTests.JacksonTestConfig.class)
 public class PostControllerTests extends BaseTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     @DisplayName("POST /api/v1/posts - 실패 (title 누락)")
@@ -111,12 +115,12 @@ public class PostControllerTests extends BaseTest {
                 .andReturn().getResponse()
                 .getContentAsString();
 
-        Post createdPost = objectMapper.readValue(response, Post.class);
+        String id = JsonPath.read(response, "$.id");
 
-        mockMvc.perform(get("/api/v1/posts/{id}", createdPost.getId())
+        mockMvc.perform(get("/api/v1/posts/{id}", id)
                         .contentType("application/json")
                 ).andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(createdPost.getId()))
+                .andExpect(jsonPath("id").value(id))
                 .andExpect(jsonPath("title").value("Test Title for GetById"))
                 .andExpect(jsonPath("content").value("Test Content for GetById"))
                 .andExpect(jsonPath("author").value("Test Author for GetById"));
